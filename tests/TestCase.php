@@ -2,9 +2,9 @@
 
 namespace Concept7\Health\Tests;
 
+use Concept7\Health\HealthServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Concept7\Health\HealthServiceProvider;
 
 class TestCase extends Orchestra
 {
