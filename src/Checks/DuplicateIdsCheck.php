@@ -2,10 +2,10 @@
 
 namespace Concept7\Health\Checks;
 
+use Illuminate\Support\Str;
 use Spatie\Health\Checks\Check;
 use Spatie\Health\Checks\Result;
 use Statamic\Facades\Stache;
-use Illuminate\Support\Str;
 
 class DuplicateIdsCheck extends Check
 {
@@ -32,7 +32,7 @@ class DuplicateIdsCheck extends Check
                 $fails[] = "[✗] Duplicate ID $id";
 
                 $fails = array_merge($fails, collect($paths)->map(function ($path) {
-                    return '* ' . Str::after($path, base_path().'/');
+                    return '* '.Str::after($path, base_path().'/');
                 })->all());
             }
 

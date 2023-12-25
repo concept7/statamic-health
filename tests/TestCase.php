@@ -2,15 +2,14 @@
 
 namespace Concept7\Health\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\WithFaker;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Statamic\Statamic;
+use Statamic\Facades\Blueprint;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
-use Statamic\Facades\Entry;
-use Statamic\Facades\Collection;
-use Illuminate\Foundation\Testing\WithFaker;
-use Statamic\Facades\Blueprint;
+use Statamic\Statamic;
 
 class TestCase extends Orchestra
 {
@@ -33,7 +32,7 @@ class TestCase extends Orchestra
         return [
             \Statamic\Providers\StatamicServiceProvider::class,
             \Spatie\Health\HealthServiceProvider::class,
-            \Concept7\Health\HealthServiceProvider::class
+            \Concept7\Health\HealthServiceProvider::class,
         ];
     }
 
@@ -59,16 +58,16 @@ class TestCase extends Orchestra
         ];
 
         foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require(__DIR__ . "/../vendor/statamic/cms/config/{$config}.php"));
+            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
         }
 
         $app['config']->set('statamic.users.repository', 'file');
 
-        $app['config']->set('statamic.stache.stores.collections.directory', __DIR__ . '/tmp/content/collections');
-        $app['config']->set('statamic.stache.stores.entries.directory', __DIR__ . '/tmp/content/collections');
+        $app['config']->set('statamic.stache.stores.collections.directory', __DIR__.'/tmp/content/collections');
+        $app['config']->set('statamic.stache.stores.entries.directory', __DIR__.'/tmp/content/collections');
 
         Statamic::booted(function () {
-            Blueprint::setDirectory(__DIR__ . '/tmp/resources/blueprints');
+            Blueprint::setDirectory(__DIR__.'/tmp/resources/blueprints');
         });
     }
 
@@ -117,8 +116,8 @@ class TestCase extends Orchestra
     protected function clearEnrties(string $collectionHandle)
     {
         Entry::query()
-          ->where('collection', $collectionHandle)
-          ->get()
-          ->each(fn($entry) => $entry->delete());
+            ->where('collection', $collectionHandle)
+            ->get()
+            ->each(fn ($entry) => $entry->delete());
     }
 }
