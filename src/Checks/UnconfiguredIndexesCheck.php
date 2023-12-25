@@ -9,6 +9,8 @@ class UnconfiguredIndexesCheck extends Check
 {
     public function run(): Result
     {
-        // your custom logic...
+        $result = Result::make();
+
+        return $result->ok();
     }
 }

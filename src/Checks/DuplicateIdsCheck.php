@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Spatie\Health\Checks\Check;
 use Spatie\Health\Checks\Result;
 use Statamic\Facades\Stache;
+use Statamic\Stache\Stores\AggregateStore;
 
 class DuplicateIdsCheck extends Check
 {
