@@ -2,35 +2,123 @@
 
 namespace Concept7\Health\Tests;
 
-use Concept7\Health\HealthServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Statamic\Statamic;
+use Statamic\Facades\Stache;
+use Statamic\Facades\User;
+use Statamic\Facades\Entry;
+use Statamic\Facades\Collection;
+use Illuminate\Foundation\Testing\WithFaker;
+use Statamic\Facades\Blueprint;
 
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
+    use WithFaker;
 
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Concept7\\Health\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-    }
+    // protected function setUp(): void
+    // {
+    //     parent::setUp();
+    // }
+
+    // protected function tearDown(): void
+    // {
+    //     Stache::clear();
+
+    //     parent::tearDown();
+    // }
 
     protected function getPackageProviders($app)
     {
         return [
-            HealthServiceProvider::class,
+            \Statamic\Providers\StatamicServiceProvider::class,
+            \Spatie\Health\HealthServiceProvider::class,
+            \Concept7\Health\HealthServiceProvider::class
         ];
     }
 
-    public function getEnvironmentSetUp($app)
+    protected function getPackageAliases($app)
     {
-        config()->set('database.default', 'testing');
+        return [
+            'Statamic' => Statamic::class,
+        ];
+    }
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_statamic-health_table.php.stub';
-        $migration->up();
-        */
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+    }
+
+    protected function resolveApplicationConfiguration($app)
+    {
+        parent::resolveApplicationConfiguration($app);
+
+        $configs = [
+            'assets', 'cp', 'forms', 'routes', 'static_caching',
+            'sites', 'stache', 'system', 'users',
+        ];
+
+        foreach ($configs as $config) {
+            $app['config']->set("statamic.$config", require(__DIR__ . "/../vendor/statamic/cms/config/{$config}.php"));
+        }
+
+        $app['config']->set('statamic.users.repository', 'file');
+
+        $app['config']->set('statamic.stache.stores.collections.directory', __DIR__ . '/tmp/content/collections');
+        $app['config']->set('statamic.stache.stores.entries.directory', __DIR__ . '/tmp/content/collections');
+
+        Statamic::booted(function () {
+            Blueprint::setDirectory(__DIR__ . '/tmp/resources/blueprints');
+        });
+    }
+
+    protected function makeUser()
+    {
+        return User::make()
+            ->id((new \Statamic\Stache\Stache())->generateId())
+            ->email($this->faker->email)
+            ->save();
+    }
+
+    protected function makeCollection(string $handle, string $name)
+    {
+        Collection::make($handle)
+            ->title($name)
+            ->pastDateBehavior('public')
+            ->futureDateBehavior('private')
+            ->save();
+
+        return Collection::findByHandle($handle);
+    }
+
+    protected function makeEntry(string $collectionHandle)
+    {
+        $slug = $this->faker->slug;
+
+        Entry::make()
+            ->collection($collectionHandle)
+            // ->blueprint('default')
+            ->locale('default')
+            ->published(true)
+            ->slug($slug)
+            ->data([
+                'likes' => [],
+            ])
+            ->set('updated_by', User::all()->first()->id())
+            ->set('updated_at', now()->timestamp)
+            ->save();
+
+        return Entry::query()
+            ->where('collection', $collectionHandle)
+            ->where('slug', $slug)
+            ->first();
+    }
+
+    protected function clearEnrties(string $collectionHandle)
+    {
+        Entry::query()
+          ->where('collection', $collectionHandle)
+          ->get()
+          ->each(fn($entry) => $entry->delete());
     }
 }

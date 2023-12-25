@@ -17,9 +17,6 @@ class HealthServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('statamic-health')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_statamic-health_table')
-            ->hasCommand(HealthCommand::class);
+            ->hasConfigFile();
     }
 }
