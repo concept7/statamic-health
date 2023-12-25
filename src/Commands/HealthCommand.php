@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Concept7\Health\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class HealthCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'statamic-health';
 
     public $description = 'My command';
 
