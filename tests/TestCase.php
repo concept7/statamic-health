@@ -58,7 +58,7 @@ class TestCase extends Orchestra
         ];
 
         foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
+            $app['config']->set("statamic.$config", require (__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
         }
 
         $app['config']->set('statamic.users.repository', 'file');
@@ -74,7 +74,7 @@ class TestCase extends Orchestra
     protected function makeUser()
     {
         return User::make()
-            ->id((new \Statamic\Stache\Stache())->generateId())
+            ->id((new \Statamic\Stache\Stache)->generateId())
             ->email($this->faker->email)
             ->save();
     }
