@@ -2,6 +2,8 @@
 
 namespace Concept7\Health;
 
+use Concept7\Health\Checks\GitLockCheck;
+use Spatie\Health\Facades\Health;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -17,5 +19,12 @@ class HealthServiceProvider extends PackageServiceProvider
         $package
             ->name('statamic-health')
             ->hasConfigFile();
+    }
+
+    public function packageBooted()
+    {
+        Health::checks([
+            GitLockCheck::class,
+        ]);
     }
 }
