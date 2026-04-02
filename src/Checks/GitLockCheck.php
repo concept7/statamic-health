@@ -14,7 +14,7 @@ class GitLockCheck extends Check
         $lockFile = base_path('.git/index.lock');
 
         if (file_exists($lockFile)) {
-            $result->failed('Git Lock file detected. Fix this issue to enable sync.');
+            return $result->failed('Git Lock file detected. Fix this issue to enable sync.');
         }
 
         return $result->ok();
