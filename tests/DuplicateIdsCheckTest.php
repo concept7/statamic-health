@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 afterEach(function () {
-    $this->clearEnrties('articles');
+    $this->clearEntries('articles');
 });
 
 it('has no duplicates in stache', function () {

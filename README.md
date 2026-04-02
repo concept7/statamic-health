@@ -5,56 +5,20 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/concept7/statamic-health/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/concept7/statamic-health/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/concept7/statamic-health.svg?style=flat-square)](https://packagist.org/packages/concept7/statamic-health)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-Todo:
+A Laravel package that adds Statamic-specific health checks on top of [spatie/laravel-health](https://github.com/spatie/laravel-health).
 
 ## Installation
-
-You can install the package via composer:
 
 ```bash
 composer require concept7/statamic-health
 ```
 
-You can publish and run the migrations with:
+## Checks
 
-```bash
-php artisan vendor:publish --tag="statamic-health-migrations"
-php artisan migrate
-```
+The following checks are registered automatically:
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="statamic-health-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="statamic-health-views"
-```
-
-## Usage
-
-Health checks:
-No duplicate IDs detected.
-No unconfigured indexes.
-
-```php
-$health = new Concept7\Health();
-echo $health->echoPhrase('Hello, Concept7!');
-```
+- **Git Lock** — Detects the presence of `.git/index.lock`, which indicates a stuck or failed Git process that would block Statamic's Git integration.
+- **Duplicate IDs** — Scans Statamic's Stache for entries sharing the same ID, which can cause unpredictable behaviour.
 
 ## Testing
 

@@ -115,7 +115,7 @@ class TestCase extends Orchestra
             ->first();
     }
 
-    protected function clearEnrties(string $collectionHandle)
+    protected function clearEntries(string $collectionHandle)
     {
         Entry::query()
             ->where('collection', $collectionHandle)
