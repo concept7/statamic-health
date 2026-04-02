@@ -4,11 +4,13 @@ namespace Concept7\Health\Tests;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\Health\HealthServiceProvider;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
+use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Statamic;
 
 class TestCase extends Orchestra
@@ -30,8 +32,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Statamic\Providers\StatamicServiceProvider::class,
-            \Spatie\Health\HealthServiceProvider::class,
+            StatamicServiceProvider::class,
+            HealthServiceProvider::class,
             \Concept7\Health\HealthServiceProvider::class,
         ];
     }
@@ -58,7 +60,7 @@ class TestCase extends Orchestra
         ];
 
         foreach ($configs as $config) {
-            $app['config']->set("statamic.$config", require(__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
+            $app['config']->set("statamic.$config", require (__DIR__."/../vendor/statamic/cms/config/{$config}.php"));
         }
 
         $app['config']->set('statamic.users.repository', 'file');
@@ -74,7 +76,7 @@ class TestCase extends Orchestra
     protected function makeUser()
     {
         return User::make()
-            ->id((new \Statamic\Stache\Stache())->generateId())
+            ->id((new \Statamic\Stache\Stache)->generateId())
             ->email($this->faker->email)
             ->save();
     }
