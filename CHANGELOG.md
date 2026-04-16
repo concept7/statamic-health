@@ -2,6 +2,12 @@
 
 All notable changes to `statamic-health` will be documented in this file.
 
+## v0.0.3 - 2026-04-16
+
+### Fixed
+
+- Register checks as instances instead of class strings to prevent boot error
+
 ## v0.0.2 - 2026-04-16
 
 ### Changed
