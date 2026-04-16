@@ -24,7 +24,7 @@ class HealthServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         Health::checks([
-            GitLockCheck::class,
+            GitLockCheck::new(),
         ]);
     }
 }
