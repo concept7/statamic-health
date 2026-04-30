@@ -2,6 +2,13 @@
 
 All notable changes to `statamic-health` will be documented in this file.
 
+## v0.0.4 - 2026-04-30
+
+### Changed
+
+- Drop Laravel 10 and PHP 8.1 support
+- Add Laravel 13 support (requires PHP 8.3)
+
 ## v0.0.3 - 2026-04-16
 
 ### Fixed
